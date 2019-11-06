@@ -13,22 +13,29 @@ void setup() {
 
 void draw() {
   background(255);
+
+  //directionalLight(, 126, 126, 0, -100, 0);
   
-  pushMatrix();
-  translate(width/2, height/2);
-  rotateX(rotx);
-  rotateY(roty);
-  scale(100);
+  for (int x = -1000; x < 1000; x += 100) {
+    for (int z = -1000; z < 0; z += 100) {
+      texturedBox(dirt_top, dirt_side, dirt_bottom, x, height/2+200, z, 50);
+    }
+  }
  
-  texturedBox(qblock);
- 
-  popMatrix();
+  
 }
 
-void texturedBox(PImage tex) {
+void texturedBox(PImage top, PImage side, PImage bottom, float x, float y, float z, float size) {
+  pushMatrix();
+  translate(x, y, z);
+  scale(size);
+  
+  rotateX(rotx);
+  rotateY(roty);
+  
   beginShape(QUADS);
   noStroke();
-  texture(tex);
+  texture(side);
   
   // +Z Front Face
   vertex(-1, -1, 1, 0, 0);
@@ -42,7 +49,43 @@ void texturedBox(PImage tex) {
   vertex( 1,  1, -1, 1, 1);
   vertex(-1,  1, -1, 0, 1);
   
+  // +X Side Face
+  vertex(1, -1,  1, 0, 0);
+  vertex(1, -1, -1, 1, 0);
+  vertex(1,  1, -1, 1, 1);
+  vertex(1,  1,  1, 0, 1);
+  
+  // -X Side Face
+  vertex(-1, -1,  1, 0, 0);
+  vertex(-1, -1, -1, 1, 0);
+  vertex(-1,  1, -1, 1, 1);
+  vertex(-1,  1,  1, 0, 1);
+  
   endShape();
+  
+  beginShape();
+  texture(bottom);
+  
+  // +Y Bottom Face
+  vertex(-1, 1, -1, 0, 0);
+  vertex( 1, 1, -1, 1, 0);
+  vertex( 1, 1,  1, 1, 1);
+  vertex(-1, 1,  1, 0, 1);
+  
+  endShape();
+  
+  beginShape();
+  texture(top);
+  
+  // -Y Top Face
+  vertex(-1, -1, -1, 0, 0);
+  vertex( 1, -1, -1, 1, 0);
+  vertex( 1, -1,  1, 1, 1);
+  vertex(-1, -1,  1, 0, 1);
+  
+  endShape();
+  
+  popMatrix();
 }
 
 
